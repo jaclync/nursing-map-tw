@@ -1,7 +1,7 @@
 # Implementation Summary - Nursing Map Taiwan
 
 ## Overview
-Successfully implemented a free map view using Apple MapKit JS to display nursing locations in Taiwan.
+Successfully implemented a free map view using OpenStreetMap and Leaflet to display nursing locations in Taiwan.
 
 ## What Was Built
 
@@ -14,7 +14,7 @@ Successfully implemented a free map view using Apple MapKit JS to display nursin
   - Styled with modern CSS
 
 - **map.js**: Application logic (6KB)
-  - MapKit JS initialization
+  - Leaflet initialization
   - Location data loading from JSON
   - Marker creation and placement
   - Interactive info panel for location details
@@ -23,20 +23,18 @@ Successfully implemented a free map view using Apple MapKit JS to display nursin
 - **data.json**: Sample data with all required fields
   - Name, city, district, village, road, section, lane, number, floor
   - Phone, opening hours, notes, basis, address
-  - Latitude, longitude, Apple Maps Place ID
+  - Latitude, longitude
 
 ### 2. Documentation & Setup
 - **README.md**: Comprehensive documentation
   - Project overview
   - Setup instructions
-  - Apple Developer account creation
-  - Token generation guide
   - Data format specification
   - Browser support info
 
 - **setup.html**: Visual setup guide
   - Step-by-step instructions with styling
-  - Links to Apple Developer resources
+  - Links to OpenStreetMap resources
   - Troubleshooting section
   - User-friendly interface
 
@@ -59,17 +57,17 @@ Successfully implemented a free map view using Apple MapKit JS to display nursin
 ## Features Implemented
 
 ### Map Functionality
-✅ Interactive Apple MapKit JS integration
-✅ Free tier implementation (no API costs)
+✅ Interactive OpenStreetMap integration
+✅ Free and open-source (no API keys required)
 ✅ Location markers with hospital emoji (🏥)
 ✅ Clickable markers showing detailed information
 ✅ Info panel with all location attributes
-✅ Map controls (zoom, user location, map type, compass)
+✅ Map controls (zoom, pan)
 ✅ Automatic region fitting for multiple locations
 
 ### Data Structure
-✅ Exact JSON format from problem statement
-✅ All 17 required fields included
+✅ JSON format as specified
+✅ All 16 required fields included
 ✅ Support for multiple locations (array format)
 ✅ Optional fields properly handled
 
@@ -86,12 +84,13 @@ Successfully implemented a free map view using Apple MapKit JS to display nursin
 - HTML5
 - CSS3 (Flexbox, modern styling)
 - Vanilla JavaScript (ES6+)
-- Apple MapKit JS API
+- Leaflet 1.9.4
+- OpenStreetMap tiles
 
 ### Key Implementation Choices
 1. **No build process**: Simple static files for easy deployment
 2. **No framework dependencies**: Lightweight and fast
-3. **Free tier**: Uses Apple MapKit JS which is free for up to 250,000 map views per day
+3. **Free and open-source**: OpenStreetMap with no API keys needed
 4. **Client-side only**: No backend required
 5. **Standards-compliant**: Modern web standards
 
@@ -114,14 +113,12 @@ Successfully implemented a free map view using Apple MapKit JS to display nursin
 ## Setup Requirements
 
 ### For Users
-1. Free Apple Developer account
-2. MapKit JS identifier and private key
-3. Generated JWT token
-4. Web server (can be local)
+1. Web browser
+2. Web server (can be local)
 
 ### Estimated Setup Time
-- First time: 10-15 minutes
-- Subsequent uses: 1-2 minutes (token refresh)
+- First time: 2-5 minutes
+- Adding new locations: < 1 minute
 
 ## Deployment Options
 

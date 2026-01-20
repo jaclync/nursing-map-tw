@@ -1,39 +1,22 @@
-// Apple MapKit JS initialization and map rendering
+// OpenStreetMap implementation using Leaflet
+// This is a free and open-source mapping solution
+// Documentation: https://leafletjs.com/
 
-// Note: For production use, you need to obtain a MapKit JS token from Apple Developer Portal
-// This is a free implementation that uses the MapKit JS library
-// Setup instructions: https://developer.apple.com/documentation/mapkitjs
+let map;
+let markers = [];
 
-const MAPKIT_TOKEN = 'YOUR_MAPKIT_JS_TOKEN_HERE';
-
-// Initialize MapKit
-async function initMapKit() {
+// Initialize Leaflet Map
+async function initMap() {
     try {
-        // Setup MapKit with JWT token
-        // For development/testing, you'll need to replace this with your actual token
-        // Free tier: https://developer.apple.com/documentation/mapkitjs/creating_a_maps_identifier_and_a_private_key
+        // Create map centered on Taiwan
+        map = L.map('map').setView([25.031469, 121.5110636], 13);
         
-        if (MAPKIT_TOKEN === 'YOUR_MAPKIT_JS_TOKEN_HERE') {
-            showError('Please configure your Apple MapKit JS token in map.js');
-            return;
-        }
-
-        mapkit.init({
-            authorizationCallback: function(done) {
-                done(MAPKIT_TOKEN);
-            }
-        });
-
-        const map = new mapkit.Map("map", {
-            center: new mapkit.Coordinate(25.031469, 121.5110636),
-            zoom: 0.05,
-            showsUserLocation: true,
-            showsUserLocationControl: true,
-            showsZoomControl: true,
-            showsMapTypeControl: true,
-            showsCompass: mapkit.FeatureVisibility.Visible
-        });
-
+        // Add OpenStreetMap tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            maxZoom: 19
+        }).addTo(map);
+        
         // Load and display nursing locations
         await loadNursingLocations(map);
         
@@ -61,11 +44,8 @@ async function loadNursingLocations(map) {
         
         // Fit map to show all markers if multiple locations
         if (locations.length > 1) {
-            const coordinates = locations.map(loc => 
-                new mapkit.Coordinate(loc.latitude, loc.longitude)
-            );
-            const region = mapkit.BoundingRegion.fromCoordinates(coordinates);
-            map.region = region;
+            const bounds = L.latLngBounds(markers.map(m => m.getLatLng()));
+            map.fitBounds(bounds, { padding: [50, 50] });
         }
     } catch (error) {
         console.error('Error loading locations:', error);
@@ -75,22 +55,33 @@ async function loadNursingLocations(map) {
 
 // Add a marker to the map
 function addMarker(map, location) {
-    const coordinate = new mapkit.Coordinate(location.latitude, location.longitude);
-    
-    // Create annotation
-    const annotation = new mapkit.MarkerAnnotation(coordinate, {
-        color: "#007AFF",
-        title: location.name,
-        subtitle: location.address,
-        glyphText: "🏥"
+    // Create custom icon for hospital
+    const hospitalIcon = L.divIcon({
+        className: 'custom-hospital-icon',
+        html: '<div style="font-size: 24px;">🏥</div>',
+        iconSize: [30, 30],
+        iconAnchor: [15, 30],
+        popupAnchor: [0, -30]
     });
     
+    // Create marker
+    const marker = L.marker([location.latitude, location.longitude], {
+        icon: hospitalIcon,
+        title: location.name
+    }).addTo(map);
+    
     // Add click handler to show details
-    annotation.addEventListener('select', function(event) {
+    marker.on('click', function() {
         showLocationDetails(location);
     });
     
-    map.addAnnotation(annotation);
+    // Add popup with basic info
+    marker.bindPopup(`
+        <strong>${location.name}</strong><br>
+        ${location.address}
+    `);
+    
+    markers.push(marker);
 }
 
 // Show location details in info panel
@@ -148,11 +139,6 @@ function showLocationDetails(location) {
             <span class="info-label">座標：</span>
             <span class="info-value">${location.latitude}, ${location.longitude}</span>
         </div>
-        ${location.appleMapsPlaceId ? `
-        <div class="info-item">
-            <span class="info-label">Apple Maps ID：</span>
-            <span class="info-value">${location.appleMapsPlaceId}</span>
-        </div>` : ''}
     `;
     
     document.body.appendChild(panel);
@@ -180,7 +166,7 @@ function showError(message) {
 
 // Initialize when DOM is ready
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initMapKit);
+    document.addEventListener('DOMContentLoaded', initMap);
 } else {
-    initMapKit();
+    initMap();
 }

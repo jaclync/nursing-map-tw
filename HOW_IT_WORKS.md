@@ -7,21 +7,23 @@
 │                                                                 │
 │  1. User opens index.html in browser                           │
 │     ↓                                                           │
-│  2. Browser loads Apple MapKit JS library from CDN             │
+│  2. Browser loads Leaflet JS library from CDN                  │
 │     ↓                                                           │
-│  3. map.js initializes with JWT token authentication           │
+│  3. map.js initializes Leaflet map                             │
 │     ↓                                                           │
-│  4. MapKit creates map centered on Taiwan (25.03°N, 121.51°E)  │
+│  4. Leaflet creates map centered on Taiwan (25.03°N, 121.51°E) │
 │     ↓                                                           │
-│  5. Fetches nursing locations from data.json                   │
+│  5. Loads OpenStreetMap tiles                                  │
 │     ↓                                                           │
-│  6. Creates marker for each location with 🏥 emoji             │
+│  6. Fetches nursing locations from data.json                   │
 │     ↓                                                           │
-│  7. Map renders with all markers visible                       │
+│  7. Creates marker for each location with 🏥 emoji             │
 │     ↓                                                           │
-│  8. User clicks on a marker                                    │
+│  8. Map renders with all markers visible                       │
 │     ↓                                                           │
-│  9. Info panel appears with location details                   │
+│  9. User clicks on a marker                                    │
+│     ↓                                                           │
+│  10. Info panel appears with location details                  │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 ```
@@ -60,11 +62,10 @@
 └──────────────────────────────────────────────────────────┘
                            ↓
 ┌──────────────────────────────────────────────────────────┐
-│               Apple MapKit JS API                        │
-│  • Map rendering                                         │
+│               OpenStreetMap Tile Servers                 │
+│  • Map tile rendering                                    │
 │  • Tile loading                                          │
-│  • User interactions                                     │
-│  • Geocoding services                                    │
+│  • Open data from OSM contributors                       │
 └──────────────────────────────────────────────────────────┘
 ```
 
@@ -81,17 +82,17 @@ Array of Location Objects
     ↓
 forEach(location => ...)
     ↓
-Create mapkit.Coordinate(lat, lng)
+Create L.marker([lat, lng])
     ↓
-Create mapkit.MarkerAnnotation()
+Create custom hospital icon
     ↓
-map.addAnnotation()
+marker.addTo(map)
     ↓
 Marker visible on map
     ↓
 User clicks marker
     ↓
-'select' event fires
+'click' event fires
     ↓
 showLocationDetails()
     ↓
@@ -102,39 +103,16 @@ Append to document.body
 Info panel visible to user
 ```
 
-## 🔐 Authentication Flow
+## 🔐 No Authentication Required
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│  Setup (One-time)                                       │
+│  Simple Setup (One-time, < 5 minutes)                   │
 │                                                         │
-│  1. Create Apple Developer Account (Free)              │
-│  2. Generate Maps ID                                   │
-│  3. Create Private Key (.p8 file)                      │
-│  4. Note Team ID and Key ID                            │
-│                                                         │
-└─────────────────────────────────────────────────────────┘
-                         ↓
-┌─────────────────────────────────────────────────────────┐
-│  Token Generation (Every ~6 months)                    │
-│                                                         │
-│  1. Run generate-token.js                              │
-│  2. Script reads .p8 private key                       │
-│  3. Creates JWT with Team ID, Key ID, expiry           │
-│  4. Signs with ES256 algorithm                         │
-│  5. Outputs token string                               │
-│                                                         │
-└─────────────────────────────────────────────────────────┘
-                         ↓
-┌─────────────────────────────────────────────────────────┐
-│  Runtime (Every page load)                             │
-│                                                         │
-│  1. map.js contains token string                       │
-│  2. mapkit.init() called with token                    │
-│  3. Token sent to Apple servers                        │
-│  4. Apple validates signature                          │
-│  5. If valid, map tiles load                           │
-│  6. User sees interactive map                          │
+│  1. Clone or download the repository                    │
+│  2. Add location data to data.json                      │
+│  3. Serve with any web server                           │
+│  4. Open in browser - no API keys needed!               │
 │                                                         │
 └─────────────────────────────────────────────────────────┘
 ```
@@ -301,17 +279,19 @@ Initial Page Load
     ↓
 HTML parsing (< 10ms)
     ↓
-Load MapKit JS from CDN (~200ms)
+Load Leaflet JS from CDN (~200ms)
+    ↓
+Load Leaflet CSS (~50ms)
     ↓
 Load map.js (~50ms)
     ↓
-Initialize MapKit (~100ms)
+Initialize Leaflet (~100ms)
     ↓
 Fetch data.json (~20ms)
     ↓
 Create markers (~50ms per 100 locations)
     ↓
-Render map tiles (~500ms)
+Load OSM tiles (~500ms)
     ↓
 Total: ~1 second for full load
 ```
