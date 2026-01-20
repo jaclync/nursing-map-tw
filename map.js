@@ -137,7 +137,7 @@ function showLocationDetails(location) {
         </div>` : ''}
         <div class="info-item">
             <span class="info-label">座標：</span>
-            <span class="info-value">${location.latitude}, ${location.longitude}</span>
+            <span class="info-value">${location.latitude.toFixed(6)}, ${location.longitude.toFixed(6)}</span>
         </div>
     `;
     
