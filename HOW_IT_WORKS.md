@@ -46,7 +46,7 @@
 │                         ↓                               │
 │  ┌────────────────────────────────────────────────┐    │
 │  │       map.js (Logic Layer)                     │    │
-│  │  • MapKit initialization                       │    │
+│  │  • Leaflet initialization                      │    │
 │  │  • Marker creation                             │    │
 │  │  • Event handling                              │    │
 │  │  • Data loading                                │    │
@@ -143,7 +143,6 @@ Populate with location data:
     • Phone, Opening Hours
     • Notes, Basis
     • Coordinates
-    • Apple Maps Place ID
     ↓
 Style with CSS
     ↓

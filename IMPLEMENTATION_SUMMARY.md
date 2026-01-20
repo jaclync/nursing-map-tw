@@ -104,7 +104,7 @@ Successfully implemented a free map view using OpenStreetMap and Leaflet to disp
 ## How It Works
 
 1. **Initialization**: When page loads, map.js is executed
-2. **MapKit Setup**: Authenticates with Apple using JWT token
+2. **Leaflet Setup**: Initializes OpenStreetMap with Leaflet
 3. **Data Loading**: Fetches location data from data.json
 4. **Map Rendering**: Creates map centered on Taiwan
 5. **Marker Creation**: Adds markers for each location
@@ -172,7 +172,7 @@ Can be deployed to any static hosting:
 ## Success Criteria Met
 
 ✅ Free map view implementation
-✅ Apple MapKit JS integration
+✅ OpenStreetMap with Leaflet integration
 ✅ JSON data structure from problem statement
 ✅ All required fields included
 ✅ Interactive markers
@@ -199,4 +199,4 @@ Can be deployed to any static hosting:
 
 ## Conclusion
 
-The implementation successfully creates a free, interactive map view using Apple MapKit JS that displays nursing locations in Taiwan with all the required data fields from the problem statement. The solution is production-ready, well-documented, secure, and easy to set up and deploy.
+The implementation successfully creates a free, interactive map view using OpenStreetMap and Leaflet that displays nursing locations in Taiwan with all the required data fields from the problem statement. The solution is production-ready, well-documented, secure, requires no API keys, and is easy to set up and deploy.
