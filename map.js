@@ -120,8 +120,8 @@ function addMarker(map, location) {
 
     // Add popup with basic info
     marker.bindPopup(`
-        <strong>${location.name}</strong><br>
-        ${location.address}
+        <div style="font-size: 16px; font-weight: 600; margin-bottom: 5px;">${location.name}</div>
+        <div style="font-size: 13px; color: #666;">${location.address}</div>
     `);
 
     markers.push(marker);
@@ -142,8 +142,8 @@ function showLocationDetails(location) {
     panel.innerHTML = `
         <button class="close-panel" onclick="closeInfoPanel()" style="
             position: absolute;
-            top: 15px;
-            right: 15px;
+            top: 22px;
+            right: 22px;
             background: none;
             border: none;
             font-size: 28px;
@@ -157,7 +157,7 @@ function showLocationDetails(location) {
             align-items: center;
             justify-content: center;
         ">&times;</button>
-        <h2 style="padding-right: 40px;">${location.name}</h2>
+        <h2 style="padding-right: 55px; margin-bottom: 15px;">${location.name}</h2>
         <div class="info-item">
             <span class="info-label">地址</span>
             <span class="info-value">${location.address}</span>
