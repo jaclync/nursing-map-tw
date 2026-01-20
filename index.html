@@ -6,6 +6,11 @@
     <title>臺灣哺集乳室地圖 - Taiwan Breastfeeding Room Map</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <!-- Leaflet MarkerCluster for performance with many markers -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
     <style>
         * {
             margin: 0;
@@ -102,6 +107,47 @@
             border-radius: 8px;
             text-align: center;
             max-width: 400px;
+        }
+
+        /* Marker cluster styles */
+        .marker-cluster-small {
+            background-color: rgba(142, 68, 173, 0.6);
+        }
+        .marker-cluster-small div {
+            background-color: rgba(142, 68, 173, 0.8);
+        }
+        .marker-cluster-medium {
+            background-color: rgba(142, 68, 173, 0.6);
+        }
+        .marker-cluster-medium div {
+            background-color: rgba(142, 68, 173, 0.8);
+        }
+        .marker-cluster-large {
+            background-color: rgba(142, 68, 173, 0.6);
+        }
+        .marker-cluster-large div {
+            background-color: rgba(142, 68, 173, 0.8);
+        }
+        .marker-cluster {
+            background-clip: padding-box;
+            border-radius: 20px;
+        }
+        .marker-cluster div {
+            width: 30px;
+            height: 30px;
+            margin-left: 5px;
+            margin-top: 5px;
+            text-align: center;
+            border-radius: 15px;
+            font: 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
+            font-weight: bold;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .marker-cluster span {
+            line-height: 30px;
         }
     </style>
 </head>

@@ -4,6 +4,7 @@
 
 let map;
 let markers = [];
+let markerClusterGroup = null;
 let userLocationMarker = null;
 let selectedMarker = null;
 
@@ -46,15 +47,48 @@ async function loadNursingLocations(map) {
 
         const locations = await response.json();
 
-        // Add markers for each location
-        locations.forEach(location => {
-            addMarker(map, location);
+        // Create marker cluster group with custom options
+        markerClusterGroup = L.markerClusterGroup({
+            // Cluster markers when zoomed out
+            spiderfyOnMaxZoom: true,
+            showCoverageOnHover: false,
+            zoomToBoundsOnClick: true,
+            maxClusterRadius: 80, // Pixels to cluster within
+            disableClusteringAtZoom: 18, // Stop clustering at high zoom
+            // Custom cluster icon
+            iconCreateFunction: function(cluster) {
+                const childCount = cluster.getChildCount();
+                let c = ' marker-cluster-';
+                if (childCount > 100) {
+                    c += 'large';
+                } else if (childCount > 10) {
+                    c += 'medium';
+                } else {
+                    c += 'small';
+                }
+
+                return L.divIcon({
+                    html: '<div><span>' + childCount + '</span></div>',
+                    className: 'marker-cluster' + c,
+                    iconSize: L.point(40, 40)
+                });
+            }
         });
+
+        // Add markers for each location to cluster group
+        locations.forEach(location => {
+            addMarker(markerClusterGroup, location);
+        });
+
+        // Add cluster group to map
+        map.addLayer(markerClusterGroup);
 
         // Fit map to show all markers if multiple locations
         if (locations.length > 1) {
-            const bounds = L.latLngBounds(markers.map(m => m.getLatLng()));
-            map.fitBounds(bounds, { padding: [50, 50] });
+            const bounds = markerClusterGroup.getBounds();
+            if (bounds.isValid()) {
+                map.fitBounds(bounds, { padding: [50, 50] });
+            }
         }
     } catch (error) {
         console.error('Error loading locations:', error);
@@ -93,13 +127,13 @@ function createPinIcon(color) {
     });
 }
 
-// Add a marker to the map
-function addMarker(map, location) {
+// Add a marker to the cluster group
+function addMarker(clusterGroup, location) {
     // Create marker with default color
     const marker = L.marker([location.latitude, location.longitude], {
         icon: createPinIcon(PIN_COLOR),
         title: location.name
-    }).addTo(map);
+    });
 
     // Store location data with marker for later use
     marker.locationData = location;
@@ -124,6 +158,8 @@ function addMarker(map, location) {
         <div style="font-size: 13px; color: #666;">${location.address}</div>
     `);
 
+    // Add to cluster group instead of directly to map
+    clusterGroup.addLayer(marker);
     markers.push(marker);
 }
 
