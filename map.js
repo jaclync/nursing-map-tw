@@ -10,16 +10,16 @@ async function initMap() {
     try {
         // Create map centered on Taiwan
         map = L.map('map').setView([25.031469, 121.5110636], 13);
-        
+
         // Add OpenStreetMap tile layer
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
             maxZoom: 19
         }).addTo(map);
-        
+
         // Load and display nursing locations
         await loadNursingLocations(map);
-        
+
         hideLoading();
     } catch (error) {
         console.error('Error initializing map:', error);
@@ -34,14 +34,14 @@ async function loadNursingLocations(map) {
         if (!response.ok) {
             throw new Error('Failed to load location data');
         }
-        
+
         const locations = await response.json();
-        
+
         // Add markers for each location
         locations.forEach(location => {
             addMarker(map, location);
         });
-        
+
         // Fit map to show all markers if multiple locations
         if (locations.length > 1) {
             const bounds = L.latLngBounds(markers.map(m => m.getLatLng()));
@@ -58,29 +58,29 @@ function addMarker(map, location) {
     // Create custom icon for hospital
     const hospitalIcon = L.divIcon({
         className: 'custom-hospital-icon',
-        html: '<div style="font-size: 24px;">🏥</div>',
+        html: '<div style="font-size: 24px;">🍼</div>',
         iconSize: [30, 30],
         iconAnchor: [15, 30],
         popupAnchor: [0, -30]
     });
-    
+
     // Create marker
     const marker = L.marker([location.latitude, location.longitude], {
         icon: hospitalIcon,
         title: location.name
     }).addTo(map);
-    
+
     // Add click handler to show details
     marker.on('click', function() {
         showLocationDetails(location);
     });
-    
+
     // Add popup with basic info
     marker.bindPopup(`
         <strong>${location.name}</strong><br>
         ${location.address}
     `);
-    
+
     markers.push(marker);
 }
 
@@ -91,30 +91,17 @@ function showLocationDetails(location) {
     if (existingPanel) {
         existingPanel.remove();
     }
-    
+
     // Create info panel
     const panel = document.createElement('div');
     panel.className = 'info-panel';
-    
+
     panel.innerHTML = `
         <h2>${location.name}</h2>
         <div class="info-item">
             <span class="info-label">地址：</span>
             <span class="info-value">${location.address}</span>
         </div>
-        <div class="info-item">
-            <span class="info-label">城市：</span>
-            <span class="info-value">${location.city}</span>
-        </div>
-        <div class="info-item">
-            <span class="info-label">區域：</span>
-            <span class="info-value">${location.district}</span>
-        </div>
-        ${location.village ? `
-        <div class="info-item">
-            <span class="info-label">里：</span>
-            <span class="info-value">${location.village}</span>
-        </div>` : ''}
         ${location.phone ? `
         <div class="info-item">
             <span class="info-label">電話：</span>
@@ -135,12 +122,8 @@ function showLocationDetails(location) {
             <span class="info-label">設置依據：</span>
             <span class="info-value">${location.basis}</span>
         </div>` : ''}
-        <div class="info-item">
-            <span class="info-label">座標：</span>
-            <span class="info-value">${location.latitude.toFixed(6)}, ${location.longitude.toFixed(6)}</span>
-        </div>
     `;
-    
+
     document.body.appendChild(panel);
 }
 
