@@ -1,0 +1,22 @@
+{
+  "name": "nursing-map-tw",
+  "version": "1.0.0",
+  "description": "Nursing locations in Taiwan displayed on an interactive map using Apple MapKit JS",
+  "main": "index.html",
+  "scripts": {
+    "serve": "npx serve",
+    "start": "npx serve"
+  },
+  "keywords": [
+    "map",
+    "nursing",
+    "taiwan",
+    "mapkit",
+    "apple-maps"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "jsonwebtoken": "^9.0.0"
+  }
+}

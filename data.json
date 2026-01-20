@@ -1,0 +1,21 @@
+[
+  {
+    "name": "國立歷史博物館",
+    "city": "臺北市",
+    "district": "中正區",
+    "village": "南門里",
+    "road": "南海路",
+    "section": "",
+    "lane": "",
+    "number": "49 號",
+    "floor": "3 樓",
+    "phone": "2361",
+    "openingHours": "週二 ~ 週日 10:00~18:00",
+    "notes": "登記",
+    "basis": "依法設置",
+    "address": "臺北市中正區南門里南海路49 號3 樓",
+    "latitude": 25.031469,
+    "longitude": 121.5110636,
+    "appleMapsPlaceId": "IDDEBEF9A2D3D80B8"
+  }
+]
