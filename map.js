@@ -142,17 +142,22 @@ function showLocationDetails(location) {
     panel.innerHTML = `
         <button class="close-panel" onclick="closeInfoPanel()" style="
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 15px;
+            right: 15px;
             background: none;
             border: none;
-            font-size: 24px;
+            font-size: 28px;
             cursor: pointer;
             color: #666;
             line-height: 1;
-            padding: 5px;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         ">&times;</button>
-        <h2>${location.name}</h2>
+        <h2 style="padding-right: 40px;">${location.name}</h2>
         <div class="info-item">
             <span class="info-label">地址</span>
             <span class="info-value">${location.address}</span>
